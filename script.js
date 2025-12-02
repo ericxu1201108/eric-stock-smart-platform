@@ -17,28 +17,331 @@ const INITIAL_STOCKS = [
 
 class StockApp {
     constructor() {
-        this.stocks = INITIAL_STOCKS.map(stock => ({
-            ...stock,
-            cost: stock.price, // Assuming initial price extracted is the cost basis
-            price: stock.price, // Current price starts same as cost
-            change: 0,
-            changePercent: 0
-        }));
-
+        this.stocks = [];
         this.init();
     }
 
     init() {
+        this.loadStocks();
+        this.loadUsers();
         this.renderStocks();
         this.updateTotalValue();
         this.startLiveUpdates();
         this.renderNews();
         this.renderTrumpUpdates();
+        this.setupAdminListeners();
+        this.checkLoginState();
+    }
 
-        // Event listeners
-        document.getElementById('add-stock-btn').addEventListener('click', () => {
-            alert('Add Stock feature coming soon!');
+    loadStocks() {
+        const saved = localStorage.getItem('myStocks');
+        if (saved) {
+            this.stocks = JSON.parse(saved);
+            // Ensure all loaded stocks have necessary properties for live updates
+            this.stocks = this.stocks.map(stock => ({
+                ...stock,
+                // If loaded from localStorage, these might already exist, otherwise initialize
+                cost: stock.cost || stock.price, // Cost basis
+                price: stock.price, // Current price
+                change: stock.change || 0,
+                changePercent: stock.changePercent || 0,
+                initialPrice: stock.initialPrice || stock.price // Price at market open for day change calculation
+            }));
+        } else {
+            this.stocks = INITIAL_STOCKS.map(stock => ({
+                ...stock,
+                cost: stock.price, // Assuming initial price extracted is the cost basis
+                price: stock.price, // Current price starts same as cost
+                change: 0,
+                changePercent: 0,
+                initialPrice: stock.price // Price at market open for day change calculation
+            }));
+        }
+    }
+
+    loadUsers() {
+        const saved = localStorage.getItem('myUsers');
+        this.users = saved ? JSON.parse(saved) : [];
+    }
+
+    saveUsers() {
+        localStorage.setItem('myUsers', JSON.stringify(this.users));
+        this.renderUserList();
+    }
+
+    saveStocks() {
+        localStorage.setItem('myStocks', JSON.stringify(this.stocks));
+        this.renderStocks();
+        this.updateTotalValue();
+        this.renderAdminList();
+    }
+
+    setupAdminListeners() {
+        const modal = document.getElementById('admin-modal');
+        const loginModal = document.getElementById('login-modal');
+        const btn = document.getElementById('manage-stocks-btn');
+        const span = document.getElementsByClassName('close-modal')[0]; // Admin modal close
+        const closeLogin = document.getElementById('close-login');
+        const addBtn = document.getElementById('add-stock-submit');
+        const resetBtn = document.getElementById('reset-default-btn');
+
+        // Tabs
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+            });
         });
+
+        // User Management
+        const addUserBtn = document.getElementById('add-user-submit');
+        if (addUserBtn) {
+            addUserBtn.onclick = () => this.handleAddUser();
+        }
+
+        // Login elements
+        const loginBtn = document.getElementById('login-btn');
+        const usernameInput = document.getElementById('login-username');
+        const passwordInput = document.getElementById('login-password');
+        const loginError = document.getElementById('login-error');
+        const vipLoginTrigger = document.getElementById('vip-login-trigger');
+
+        // Open Login Modal from Admin Button
+        btn.onclick = () => {
+            const role = sessionStorage.getItem('userRole');
+            if (role === 'admin') {
+                modal.style.display = 'block';
+                this.renderAdminList();
+                this.renderUserList();
+            } else {
+                loginModal.style.display = 'block';
+                usernameInput.value = '';
+                passwordInput.value = '';
+                loginError.style.display = 'none';
+            }
+        }
+
+        // Open Login Modal from VIP Trigger
+        if (vipLoginTrigger) {
+            vipLoginTrigger.onclick = () => {
+                loginModal.style.display = 'block';
+                usernameInput.value = '';
+                passwordInput.value = '';
+                loginError.style.display = 'none';
+            }
+        }
+
+        // Login Logic
+        loginBtn.onclick = () => {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username === 'admin' && password === 'admin123') {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('userRole', 'admin');
+                sessionStorage.setItem('username', 'Administrator');
+                this.handleLoginSuccess(loginModal, modal);
+            } else {
+                // Check against member list
+                const user = this.users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userRole', 'member');
+                    sessionStorage.setItem('username', user.username);
+                    this.handleLoginSuccess(loginModal, null);
+                } else {
+                    loginError.style.display = 'block';
+                }
+            }
+        }
+
+        // Close Login Modal
+        closeLogin.onclick = () => {
+            loginModal.style.display = 'none';
+        }
+
+        span.onclick = () => {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target == loginModal) {
+                loginModal.style.display = 'none';
+            }
+        }
+
+        addBtn.onclick = () => this.handleAddStock();
+
+        resetBtn.onclick = () => {
+            if (confirm('Are you sure you want to reset to the default portfolio? This will clear your changes.')) {
+                this.stocks = INITIAL_STOCKS.map(stock => ({
+                    ...stock,
+                    cost: stock.price,
+                    price: stock.price,
+                    change: 0,
+                    changePercent: 0,
+                    initialPrice: stock.price
+                }));
+                this.saveStocks();
+            }
+        }
+    }
+
+    handleLoginSuccess(loginModal, adminModal) {
+        loginModal.style.display = 'none';
+        this.checkLoginState();
+        if (adminModal) {
+            adminModal.style.display = 'block';
+            this.renderAdminList();
+            this.renderUserList();
+        } else {
+            alert(`Welcome back, ${sessionStorage.getItem('username')}!`);
+        }
+    }
+
+    checkLoginState() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        const role = sessionStorage.getItem('userRole');
+
+        // VIP Content Logic
+        const vipSection = document.getElementById('vip-section');
+        const vipContent = document.querySelector('.vip-content');
+        const vipUnlocked = document.querySelector('.vip-content-unlocked');
+
+        if (vipSection) {
+            vipSection.style.display = 'block'; // Always show section container
+            if (isLoggedIn) {
+                vipContent.style.display = 'none';
+                vipUnlocked.style.display = 'block';
+            } else {
+                vipContent.style.display = 'block';
+                vipUnlocked.style.display = 'none';
+            }
+        }
+
+        // Admin Button Logic
+        const adminBtn = document.getElementById('manage-stocks-btn');
+        if (role === 'member') {
+            adminBtn.style.display = 'none';
+        } else {
+            adminBtn.style.display = 'block';
+            adminBtn.textContent = isLoggedIn && role === 'admin' ? 'Admin Panel' : 'Manage Stocks';
+        }
+    }
+
+    handleAddUser() {
+        const usernameInput = document.getElementById('new-username');
+        const passwordInput = document.getElementById('new-password');
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!username || !password) {
+            alert('Please enter both username and password.');
+            return;
+        }
+
+        if (this.users.some(u => u.username === username)) {
+            alert('Username already exists.');
+            return;
+        }
+
+        this.users.push({ username, password });
+        this.saveUsers();
+
+        usernameInput.value = '';
+        passwordInput.value = '';
+        alert(`User ${username} created successfully.`);
+    }
+
+    renderUserList() {
+        const list = document.getElementById('admin-user-list');
+        if (!list) return;
+
+        list.innerHTML = this.users.map(user => `
+            <li class="admin-stock-item">
+                <div class="admin-stock-info">
+                    <span class="admin-stock-symbol">${user.username}</span>
+                    <span class="admin-stock-details">Member</span>
+                </div>
+                <button class="btn-remove" onclick="app.removeUser('${user.username}')">Remove</button>
+            </li>
+        `).join('');
+    }
+
+    removeUser(username) {
+        if (confirm(`Remove user ${username}?`)) {
+            this.users = this.users.filter(u => u.username !== username);
+            this.saveUsers();
+        }
+    }
+
+    renderAdminList() {
+        const list = document.getElementById('admin-stock-list');
+        list.innerHTML = this.stocks.map(stock => `
+            <li class="admin-stock-item">
+                <div class="admin-stock-info">
+                    <span class="admin-stock-symbol">${stock.symbol}</span>
+                    <span class="admin-stock-details">${stock.shares} shares @ $${this.formatCurrency(stock.cost)}</span>
+                </div>
+                <button class="btn-remove" onclick="app.removeStock('${stock.symbol}')">Remove</button>
+            </li>
+        `).join('');
+    }
+
+    handleAddStock() {
+        const symbolInput = document.getElementById('new-symbol');
+        const sharesInput = document.getElementById('new-shares');
+        const costInput = document.getElementById('new-cost');
+
+        const symbol = symbolInput.value.toUpperCase().trim();
+        const shares = parseFloat(sharesInput.value);
+        const cost = parseFloat(costInput.value);
+
+        if (!symbol || isNaN(shares) || isNaN(cost) || shares <= 0 || cost <= 0) {
+            alert('Please fill in all fields correctly with positive numbers.');
+            return;
+        }
+
+        if (this.stocks.some(s => s.symbol === symbol)) {
+            alert('Stock already exists in your portfolio!');
+            return;
+        }
+
+        // Mock initial price as cost for simplicity, or fetch real price if we had an API
+        const newStock = {
+            symbol,
+            name: symbol, // In a real app, we'd fetch the name
+            price: cost, // Current price starts at cost
+            change: 0,
+            changePercent: 0,
+            shares,
+            cost,
+            initialPrice: cost // Price at market open for day change calculation
+        };
+
+        this.stocks.push(newStock);
+        this.saveStocks();
+
+        // Clear inputs
+        symbolInput.value = '';
+        sharesInput.value = '';
+        costInput.value = '';
+    }
+
+    removeStock(symbol) {
+        if (confirm(`Remove ${symbol} from portfolio?`)) {
+            this.stocks = this.stocks.filter(s => s.symbol !== symbol);
+            this.saveStocks();
+        }
     }
 
     renderTrumpUpdates() {
@@ -184,8 +487,9 @@ class StockApp {
             tr.id = `stock-${stock.symbol}`;
 
             const marketValue = stock.price * stock.shares;
-            const returnValue = (stock.price - stock.cost) * stock.shares;
-            const returnPercent = stock.cost > 0 ? ((stock.price - stock.cost) / stock.cost) * 100 : 0;
+            const totalCost = stock.cost * stock.shares; // Total cost for all shares of this stock
+            const returnValue = marketValue - totalCost;
+            const returnPercent = totalCost > 0 ? (returnValue / totalCost) * 100 : 0;
             const isPositive = returnValue >= 0;
 
             tr.innerHTML = `
