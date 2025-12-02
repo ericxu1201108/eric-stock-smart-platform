@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPulse | Premium Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M21 7H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M21 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>StockPulse</span>
+            </div>
+            <div class="user-profile">
+                <div class="avatar">EX</div>
+            </div>
+        </header>
+
+        <main>
+            <section class="dashboard-summary">
+                <div class="card summary-card">
+                    <h2>Total Portfolio Value</h2>
+                    <div class="value-display">
+                        <span class="currency">$</span>
+                        <span id="total-value">0.00</span>
+                    </div>
+                    <div class="change-indicator" id="total-change">
+                        <span class="icon">▲</span>
+                        <span class="percentage">0.00%</span>
+                        <span class="period">Today</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="main-grid">
+                <section class="stocks-section">
+                    <div class="section-header">
+                        <h3>My Watchlist</h3>
+                        <button class="btn-add" id="add-stock-btn">+ Add Stock</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="stocks-table">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Change</th>
+                                    <th class="text-right">Shares</th>
+                                    <th class="text-right">Avg Cost</th>
+                                    <th class="text-right">Market Value</th>
+                                    <th class="text-right">Return</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stocks-body">
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <div class="sidebar">
+                    <aside class="news-section">
+                        <div class="section-header">
+                            <h3>每日晨报 ☕</h3>
+                            <span class="news-time">美东时间 8:30 AM 更新</span>
+                        </div>
+                        <div class="news-feed" id="news-feed">
+                            <!-- News items injected by JS -->
+                        </div>
+                    </aside>
+
+                    <aside class="trump-section">
+                        <div class="section-header">
+                            <h3>特朗普动态 🇺🇸</h3>
+                            <span class="news-time">实时追踪</span>
+                        </div>
+                        <div class="trump-feed" id="trump-feed">
+                            <!-- Trump updates injected by JS -->
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
