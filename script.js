@@ -79,7 +79,7 @@ class StockApp {
     setupAdminListeners() {
         const modal = document.getElementById('admin-modal');
         const loginModal = document.getElementById('login-modal');
-        const btn = document.getElementById('manage-stocks-btn');
+        const btn = document.getElementById('nav-login-btn'); // Updated ID
         const span = document.getElementsByClassName('close-modal')[0]; // Admin modal close
         const closeLogin = document.getElementById('close-login');
         const addBtn = document.getElementById('add-stock-submit');
@@ -228,7 +228,7 @@ class StockApp {
         }
 
         // Admin Button Logic
-        const adminBtn = document.getElementById('manage-stocks-btn');
+        const adminBtn = document.getElementById('nav-login-btn'); // Updated ID
         if (role === 'member') {
             adminBtn.style.display = 'none';
         } else {

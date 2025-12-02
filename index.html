@@ -16,180 +16,200 @@
         <header class="app-header">
             <div class="logo">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M21 7H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M21 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-                <span>StockPulse</span>
-            </div>
-            <div class="user-profile">
-                <div class="avatar">EX</div>
-            </div>
-        </header>
+                    <path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" <!--
+                        Navigation Bar -->
+                        <nav class="navbar">
+                            <div class="nav-container">
+                                <div class="nav-logo">Eric's Portfolio</div>
+                                <div class="nav-links">
+                                    <a href="#about-section">个人介绍</a>
+                                    <a href="#stocks-section">现有持仓</a>
+                                    <a href="#trump-section">总统发言</a>
+                                    <a href="#news-section">公司消息</a>
+                                </div>
+                                <button class="btn-login" id="nav-login-btn">Manage Stocks</button>
+                            </div>
+                        </nav>
 
-        <main>
-            <section class="dashboard-summary">
-                <div class="card summary-card">
-                    <h2>Total Portfolio Value</h2>
-                    <div class="value-display">
-                        <span class="currency">$</span>
-                        <span id="total-value">0.00</span>
-                    </div>
-                    <div class="change-indicator" id="total-change">
-                        <span class="icon">▲</span>
-                        <span class="percentage">0.00%</span>
-                        <span class="period">Today</span>
-                    </div>
-                </div>
-            </section>
+                        <div class="container">
+                            <header>
+                                <div class="header-content">
+                                    <h1>My Portfolio Tracker</h1>
+                                    <p class="subtitle">Real-time tracking of assets and market insights</p>
+                                </div>
+                                <div class="portfolio-summary">
+                                    <div class="summary-card">
+                                        <span class="label">Total Value</span>
+                                        <span class="value" id="total-value">$0.00</span>
+                                    </div>
+                                    <div class="summary-card">
+                                        <span class="label">Day Change</span>
+                                        <span class="value" id="total-change">
+                                            <span class="icon">-</span>
+                                            <span class="percentage">0.00%</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </header>
 
-            <div class="main-grid">
-                <section class="stocks-section">
-                    <div class="section-header">
-                        <h3>Your Assets</h3>
-                        <button class="btn-add" id="manage-stocks-btn">Manage Stocks</button>
-                    </div>
+                            <main>
+                                <!-- About Section -->
+                                <section id="about-section" class="about-section">
+                                    <div class="section-header">
+                                        <h3>👋 关于我</h3>
+                                    </div>
+                                    <div class="about-content">
+                                        <p>欢迎来到我的个人投资追踪平台。这里汇集了我对市场的最新观察、核心持仓表现以及对宏观政策的深度分析。我相信通过数据驱动的决策和对政治经济学的敏锐洞察，能在波动的市场中寻找确定的机会。
+                                        </p>
+                                    </div>
+                                </section>
 
-                    <div class="table-container">
-                        <table class="stocks-table">
-                            <thead>
-                                <tr>
-                                    <th>Symbol</th>
-                                    <th class="text-right">Price</th>
-                                    <th class="text-right">Change</th>
-                                    <th class="text-right">Shares</th>
-                                    <th class="text-right">Avg Cost</th>
-                                    <th class="text-right">Market Value</th>
-                                    <th class="text-right">Return</th>
-                                </tr>
-                            </thead>
-                            <tbody id="stocks-body">
-                                <!-- Stocks will be populated by JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </div>
+                                <div class="main-grid">
+                                    <section id="stocks-section" class="stocks-section">
+                                        <div class="section-header">
+                                            <h3>Your Assets</h3>
+                                            <!-- Login button moved to navbar -->
+                                        </div>
 
-            <aside class="sidebar">
-                <!-- News Section -->
-                <div class="news-section">
-                    <div class="section-header">
-                        <h3>每日晨报 ☕</h3>
-                        <span class="news-time">今天 8:30 AM</span>
-                    </div>
-                    <div class="news-feed" id="news-feed">
-                        <!-- News items will be populated by JS -->
-                    </div>
-                </div>
+                                        <div class="table-container">
+                                            <table class="stocks-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Symbol</th>
+                                                        <th class="text-right">Price</th>
+                                                        <th class="text-right">Change</th>
+                                                        <th class="text-right">Shares</th>
+                                                        <th class="text-right">Avg Cost</th>
+                                                        <th class="text-right">Market Value</th>
+                                                        <th class="text-right">Return</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="stocks-body">
+                                                    <!-- Stocks will be populated by JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+                                </div>
 
-                <!-- Trump Tracker Section -->
-                <div class="trump-section">
-                    <div class="section-header">
-                        <h3>特朗普动态 🇺🇸</h3>
-                        <span class="news-time">Live</span>
-                    </div>
-                    <div class="trump-feed" id="trump-feed">
-                        <!-- Trump updates will be populated by JS -->
-                    </div>
+                                <aside class="sidebar">
+                                    <!-- News Section -->
+                                    <div id="news-section" class="news-section">
+                                        <div class="section-header">
+                                            <h3>每日晨报 ☕</h3>
+                                            <span class="news-time">今天 8:30 AM</span>
+                                        </div>
+                                        <div class="news-feed" id="news-feed">
+                                            <!-- News items will be populated by JS -->
+                                        </div>
+                                    </div>
 
-                    <!-- VIP Section -->
-                    <div class="vip-section" id="vip-section" style="display: none;">
-                        <div class="vip-header">
-                            <span class="vip-badge">VIP</span>
-                            <h4>深度市场预测</h4>
+                                    <!-- Trump Tracker Section -->
+                                    <div id="trump-section" class="trump-section">
+                                        <div class="section-header">
+                                            <h3>特朗普动态 🇺🇸</h3>
+                                            <span class="news-time">Live</span>
+                                        </div>
+                                        <div class="trump-feed" id="trump-feed">
+                                            <!-- Trump updates will be populated by JS -->
+                                        </div>
+
+                                        <!-- VIP Section -->
+                                        <div class="vip-section" id="vip-section" style="display: none;">
+                                            <div class="vip-header">
+                                                <span class="vip-badge">VIP</span>
+                                                <h4>深度市场预测</h4>
+                                            </div>
+                                            <div class="vip-content">
+                                                <p>🔒 仅限会员查看：特朗普政策对下周科技股的量化影响模型...</p>
+                                                <button class="btn-unlock" id="vip-login-trigger">登录查看</button>
+                                            </div>
+                                            <div class="vip-content-unlocked" style="display: none;">
+                                                <div class="prediction-card">
+                                                    <h5>下周预测: 科技股 (XLK)</h5>
+                                                    <div class="prediction-value positive">▲ 2.4%</div>
+                                                    <p>基于最新的税收提案，模型显示资金将加速回流。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </aside>
                         </div>
-                        <div class="vip-content">
-                            <p>🔒 仅限会员查看：特朗普政策对下周科技股的量化影响模型...</p>
-                            <button class="btn-unlock" id="vip-login-trigger">登录查看</button>
-                        </div>
-                        <div class="vip-content-unlocked" style="display: none;">
-                            <div class="prediction-card">
-                                <h5>下周预测: 科技股 (XLK)</h5>
-                                <div class="prediction-value positive">▲ 2.4%</div>
-                                <p>基于最新的税收提案，模型显示资金将加速回流。</p>
+
+                        <!-- Login Modal -->
+                        <div id="login-modal" class="modal">
+                            <div class="modal-content" style="max-width: 400px;">
+                                <div class="modal-header">
+                                    <h2>Login</h2>
+                                    <span class="close-modal" id="close-login">&times;</span>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="add-stock-form"
+                                        style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                                        <input type="text" id="login-username" placeholder="Username">
+                                        <input type="password" id="login-password" placeholder="Password">
+                                        <button id="login-btn">Login</button>
+                                        <p id="login-error"
+                                            style="color: var(--danger-color); font-size: 0.875rem; margin-top: 1rem; display: none;">
+                                            Invalid credentials</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </aside>
-    </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
-            <div class="modal-header">
-                <h2>Login</h2>
-                <span class="close-modal" id="close-login">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="add-stock-form" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
-                    <input type="text" id="login-username" placeholder="Username">
-                    <input type="password" id="login-password" placeholder="Password">
-                    <button id="login-btn">Login</button>
-                    <p id="login-error"
-                        style="color: var(--danger-color); font-size: 0.875rem; margin-top: 1rem; display: none;">
-                        Invalid credentials</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <!-- Admin Modal -->
+                        <div id="admin-modal" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2>Admin Dashboard</h2>
+                                    <span class="close-modal">&times;</span>
+                                </div>
+                                <div class="modal-tabs">
+                                    <button class="tab-btn active" data-tab="stocks">Manage Stocks</button>
+                                    <button class="tab-btn" data-tab="users">Manage Users</button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Stocks Tab -->
+                                    <div id="tab-stocks" class="tab-content active">
+                                        <div class="add-stock-form">
+                                            <input type="text" id="new-symbol" placeholder="Symbol (e.g. AAPL)"
+                                                uppercase>
+                                            <input type="number" id="new-shares" placeholder="Shares">
+                                            <input type="number" id="new-cost" placeholder="Avg Cost ($)">
+                                            <button id="add-stock-submit">Add Stock</button>
+                                        </div>
+                                        <div class="stock-list-header">
+                                            <span>Symbol</span>
+                                            <span>Action</span>
+                                        </div>
+                                        <ul id="admin-stock-list">
+                                            <!-- List items populated by JS -->
+                                        </ul>
+                                        <div class="modal-actions">
+                                            <button id="reset-default-btn" class="btn-danger">Reset to Default</button>
+                                        </div>
+                                    </div>
 
-    <!-- Admin Modal -->
-    <div id="admin-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Admin Dashboard</h2>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-tabs">
-                <button class="tab-btn active" data-tab="stocks">Manage Stocks</button>
-                <button class="tab-btn" data-tab="users">Manage Users</button>
-            </div>
-            <div class="modal-body">
-                <!-- Stocks Tab -->
-                <div id="tab-stocks" class="tab-content active">
-                    <div class="add-stock-form">
-                        <input type="text" id="new-symbol" placeholder="Symbol (e.g. AAPL)" uppercase>
-                        <input type="number" id="new-shares" placeholder="Shares">
-                        <input type="number" id="new-cost" placeholder="Avg Cost ($)">
-                        <button id="add-stock-submit">Add Stock</button>
-                    </div>
-                    <div class="stock-list-header">
-                        <span>Symbol</span>
-                        <span>Action</span>
-                    </div>
-                    <ul id="admin-stock-list">
-                        <!-- List items populated by JS -->
-                    </ul>
-                    <div class="modal-actions">
-                        <button id="reset-default-btn" class="btn-danger">Reset to Default</button>
-                    </div>
-                </div>
+                                    <!-- Users Tab -->
+                                    <div id="tab-users" class="tab-content">
+                                        <div class="add-stock-form">
+                                            <input type="text" id="new-username" placeholder="New Username">
+                                            <input type="password" id="new-password" placeholder="Password">
+                                            <button id="add-user-submit">Create Member</button>
+                                        </div>
+                                        <div class="stock-list-header">
+                                            <span>Username</span>
+                                            <span>Action</span>
+                                        </div>
+                                        <ul id="admin-user-list">
+                                            <!-- User items populated by JS -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Users Tab -->
-                <div id="tab-users" class="tab-content">
-                    <div class="add-stock-form">
-                        <input type="text" id="new-username" placeholder="New Username">
-                        <input type="password" id="new-password" placeholder="Password">
-                        <button id="add-user-submit">Create Member</button>
-                    </div>
-                    <div class="stock-list-header">
-                        <span>Username</span>
-                        <span>Action</span>
-                    </div>
-                    <ul id="admin-user-list">
-                        <!-- User items populated by JS -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+                        <script src="script.js"></script>
 </body>
 
 </html>
