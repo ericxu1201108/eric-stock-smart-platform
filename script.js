@@ -189,18 +189,18 @@ class StockApp {
             const isPositive = returnValue >= 0;
 
             tr.innerHTML = `
-                <td>
+                <td data-label="Symbol">
                     <div class="symbol-cell">${stock.symbol}</div>
                     <span class="name-sub">${stock.name}</span>
                 </td>
-                <td class="text-right price-cell" id="price-${stock.symbol}">$${this.formatCurrency(stock.price)}</td>
-                <td class="text-right" id="change-${stock.symbol}" style="color: var(--${stock.change >= 0 ? 'success' : 'danger'}-color)">
+                <td class="text-right price-cell" id="price-${stock.symbol}" data-label="Price">$${this.formatCurrency(stock.price)}</td>
+                <td class="text-right" id="change-${stock.symbol}" data-label="Change" style="color: var(--${stock.change >= 0 ? 'success' : 'danger'}-color)">
                     ${stock.change >= 0 ? '+' : ''}${this.formatCurrency(stock.change)} (${stock.changePercent.toFixed(2)}%)
                 </td>
-                <td class="text-right">${stock.shares}</td>
-                <td class="text-right">$${this.formatCurrency(stock.cost)}</td>
-                <td class="text-right" id="value-${stock.symbol}">$${this.formatCurrency(marketValue)}</td>
-                <td class="text-right" id="return-${stock.symbol}" style="color: var(--${isPositive ? 'success' : 'danger'}-color)">
+                <td class="text-right" data-label="Shares">${stock.shares}</td>
+                <td class="text-right" data-label="Avg Cost">$${this.formatCurrency(stock.cost)}</td>
+                <td class="text-right" id="value-${stock.symbol}" data-label="Market Value">$${this.formatCurrency(marketValue)}</td>
+                <td class="text-right" id="return-${stock.symbol}" data-label="Return" style="color: var(--${isPositive ? 'success' : 'danger'}-color)">
                     ${isPositive ? '+' : ''}${this.formatCurrency(returnValue)} (${returnPercent.toFixed(2)}%)
                 </td>
             `;

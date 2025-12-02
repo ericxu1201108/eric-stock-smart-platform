@@ -502,3 +502,85 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1rem;
+    }
+
+    .app-header {
+        margin-bottom: 2rem;
+    }
+
+    .value-display {
+        font-size: 3rem;
+    }
+
+    .currency {
+        font-size: 1.5rem;
+    }
+
+    /* Table to Card View */
+    .stocks-table thead {
+        display: none;
+    }
+
+    .stocks-table,
+    .stocks-table tbody,
+    .stocks-table tr,
+    .stocks-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .stocks-table tr {
+        margin-bottom: 1rem;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .stocks-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: right;
+    }
+
+    .stocks-table td:last-child {
+        border-bottom: none;
+    }
+
+    .stocks-table td::before {
+        content: attr(data-label);
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        text-align: left;
+    }
+
+    /* Special handling for Symbol cell to make it look like a header */
+    .stocks-table td[data-label="Symbol"] {
+        justify-content: flex-start;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stocks-table td[data-label="Symbol"]::before {
+        display: none;
+    }
+
+    .symbol-cell {
+        font-size: 1.125rem;
+    }
+
+    .name-sub {
+        font-size: 0.875rem;
+    }
+}
