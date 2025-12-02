@@ -329,86 +329,86 @@ class StockApp {
             }
         });
     }
-}
-const symbolInput = document.getElementById('new-symbol');
-const sharesInput = document.getElementById('new-shares');
-const costInput = document.getElementById('new-cost');
+    handleAddStock() {
+        const symbolInput = document.getElementById('new-symbol');
+        const sharesInput = document.getElementById('new-shares');
+        const costInput = document.getElementById('new-cost');
 
-const symbol = symbolInput.value.toUpperCase().trim();
-const shares = parseFloat(sharesInput.value);
-const cost = parseFloat(costInput.value);
+        const symbol = symbolInput.value.toUpperCase().trim();
+        const shares = parseFloat(sharesInput.value);
+        const cost = parseFloat(costInput.value);
 
-if (!symbol || isNaN(shares) || isNaN(cost) || shares <= 0 || cost <= 0) {
-    alert('Please fill in all fields correctly with positive numbers.');
-    return;
-}
-
-if (this.stocks.some(s => s.symbol === symbol)) {
-    alert('Stock already exists in your portfolio!');
-    return;
-}
-
-// Mock initial price as cost for simplicity, or fetch real price if we had an API
-const newStock = {
-    symbol,
-    name: symbol, // In a real app, we'd fetch the name
-    price: cost, // Current price starts at cost
-    change: 0,
-    changePercent: 0,
-    shares,
-    cost,
-    initialPrice: cost // Price at market open for day change calculation
-};
-
-this.stocks.push(newStock);
-this.saveStocks();
-
-// Clear inputs
-symbolInput.value = '';
-sharesInput.value = '';
-costInput.value = '';
-    }
-
-removeStock(symbol) {
-    if (confirm(`Remove ${symbol} from portfolio?`)) {
-        this.stocks = this.stocks.filter(s => s.symbol !== symbol);
-        this.saveStocks();
-    }
-}
-
-renderTrumpUpdates() {
-    const container = document.getElementById('trump-feed');
-    const updates = [
-        {
-            type: 'speech',
-            text: '在经济俱乐部发表关于税收政策的演讲',
-            time: '2小时前',
-            tag: '经济政策',
-            analysis: '提议降低企业税率，旨在刺激本土制造业投资。',
-            cryptoImpact: { sentiment: 'positive', text: '利好 (资金流动性增加)' },
-            stockImpact: { sentiment: 'positive', text: '利好 (制造业/工业)' }
-        },
-        {
-            type: 'social',
-            text: '“股市创下历史新高！美国再次伟大！”',
-            time: '4小时前',
-            tag: 'Truth Social',
-            analysis: '强调市场表现作为执政成绩，暗示将继续维持宽松政策。',
-            cryptoImpact: { sentiment: 'neutral', text: '中性' },
-            stockImpact: { sentiment: 'positive', text: '利好 (市场信心增强)' }
-        },
-        {
-            type: 'press',
-            text: '宣布新的能源独立计划，旨在降低油价',
-            time: '昨天',
-            tag: '能源',
-            analysis: '大力支持传统能源开采，可能降低通胀预期。',
-            cryptoImpact: { sentiment: 'positive', text: '利好 (挖矿成本降低)' },
-            stockImpact: { sentiment: 'mixed', text: '分化 (利好能源/利空新能源)' }
+        if (!symbol || isNaN(shares) || isNaN(cost) || shares <= 0 || cost <= 0) {
+            alert('Please fill in all fields correctly with positive numbers.');
+            return;
         }
-    ];
 
-    container.innerHTML = updates.map(item => `
+        if (this.stocks.some(s => s.symbol === symbol)) {
+            alert('Stock already exists in your portfolio!');
+            return;
+        }
+
+        // Mock initial price as cost for simplicity, or fetch real price if we had an API
+        const newStock = {
+            symbol,
+            name: symbol, // In a real app, we'd fetch the name
+            price: cost, // Current price starts at cost
+            change: 0,
+            changePercent: 0,
+            shares,
+            cost,
+            initialPrice: cost // Price at market open for day change calculation
+        };
+
+        this.stocks.push(newStock);
+        this.saveStocks();
+
+        // Clear inputs
+        symbolInput.value = '';
+        sharesInput.value = '';
+        costInput.value = '';
+    }
+
+    removeStock(symbol) {
+        if (confirm(`Remove ${symbol} from portfolio?`)) {
+            this.stocks = this.stocks.filter(s => s.symbol !== symbol);
+            this.saveStocks();
+        }
+    }
+
+    renderTrumpUpdates() {
+        const container = document.getElementById('trump-feed');
+        const updates = [
+            {
+                type: 'speech',
+                text: '在经济俱乐部发表关于税收政策的演讲',
+                time: '2小时前',
+                tag: '经济政策',
+                analysis: '提议降低企业税率，旨在刺激本土制造业投资。',
+                cryptoImpact: { sentiment: 'positive', text: '利好 (资金流动性增加)' },
+                stockImpact: { sentiment: 'positive', text: '利好 (制造业/工业)' }
+            },
+            {
+                type: 'social',
+                text: '“股市创下历史新高！美国再次伟大！”',
+                time: '4小时前',
+                tag: 'Truth Social',
+                analysis: '强调市场表现作为执政成绩，暗示将继续维持宽松政策。',
+                cryptoImpact: { sentiment: 'neutral', text: '中性' },
+                stockImpact: { sentiment: 'positive', text: '利好 (市场信心增强)' }
+            },
+            {
+                type: 'press',
+                text: '宣布新的能源独立计划，旨在降低油价',
+                time: '昨天',
+                tag: '能源',
+                analysis: '大力支持传统能源开采，可能降低通胀预期。',
+                cryptoImpact: { sentiment: 'positive', text: '利好 (挖矿成本降低)' },
+                stockImpact: { sentiment: 'mixed', text: '分化 (利好能源/利空新能源)' }
+            }
+        ];
+
+        container.innerHTML = updates.map(item => `
             <div class="trump-item">
                 <div class="trump-icon">🇺🇸</div>
                 <div class="trump-content">
@@ -431,22 +431,22 @@ renderTrumpUpdates() {
                 </div>
             </div>
         `).join('');
-}
+    }
 
-renderNews() {
-    const newsContainer = document.getElementById('news-feed');
-    const now = new Date();
+    renderNews() {
+        const newsContainer = document.getElementById('news-feed');
+        const now = new Date();
 
-    // Convert to ET
-    const etNow = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
-    const isAfter830 = etNow.getHours() > 8 || (etNow.getHours() === 8 && etNow.getMinutes() >= 30);
+        // Convert to ET
+        const etNow = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+        const isAfter830 = etNow.getHours() > 8 || (etNow.getHours() === 8 && etNow.getMinutes() >= 30);
 
-    // If before 8:30 AM ET, show "Yesterday's" news or a "Waiting for market open" state
-    // For this demo, we'll just show "Latest Updates" but flag them as "Pre-market" if early.
+        // If before 8:30 AM ET, show "Yesterday's" news or a "Waiting for market open" state
+        // For this demo, we'll just show "Latest Updates" but flag them as "Pre-market" if early.
 
-    const newsItems = this.generateNewsItems(isAfter830);
+        const newsItems = this.generateNewsItems(isAfter830);
 
-    newsContainer.innerHTML = newsItems.map(item => `
+        newsContainer.innerHTML = newsItems.map(item => `
             <div class="news-item">
                 <div class="news-meta">
                     <span class="news-tag">${item.symbol}</span>
@@ -456,75 +456,75 @@ renderNews() {
                 <div class="news-summary">${item.summary}</div>
             </div>
         `).join('');
-}
+    }
 
-generateNewsItems(isAfter830) {
-    // Mock news generator based on portfolio stocks
-    const templates = [
-        { title: "发布强劲的第四季度财报", summary: "受云业务增长推动，营收超出预期 15%。" },
-        { title: "宣布建立新的战略合作伙伴关系", summary: "此次合作旨在加速人工智能的开发与整合。" },
-        { title: "分析师上调评级至“买入”", summary: "随着产品路线图的积极进展，目标价上调至新高。" },
-        { title: "发布下一代产品系列", summary: "备受期待的新品发布预计将夺取巨大的市场份额。" },
-        { title: "CEO 就未来前景发表评论", summary: "管理层强调致力于提高运营效率和持续增长。" }
-    ];
+    generateNewsItems(isAfter830) {
+        // Mock news generator based on portfolio stocks
+        const templates = [
+            { title: "发布强劲的第四季度财报", summary: "受云业务增长推动，营收超出预期 15%。" },
+            { title: "宣布建立新的战略合作伙伴关系", summary: "此次合作旨在加速人工智能的开发与整合。" },
+            { title: "分析师上调评级至“买入”", summary: "随着产品路线图的积极进展，目标价上调至新高。" },
+            { title: "发布下一代产品系列", summary: "备受期待的新品发布预计将夺取巨大的市场份额。" },
+            { title: "CEO 就未来前景发表评论", summary: "管理层强调致力于提高运营效率和持续增长。" }
+        ];
 
-    // Pick 5 random stocks from portfolio to have news
-    const shuffledStocks = [...this.stocks].sort(() => 0.5 - Math.random()).slice(0, 5);
+        // Pick 5 random stocks from portfolio to have news
+        const shuffledStocks = [...this.stocks].sort(() => 0.5 - Math.random()).slice(0, 5);
 
-    return shuffledStocks.map(stock => {
-        const template = templates[Math.floor(Math.random() * templates.length)];
-        return {
-            symbol: stock.symbol,
-            time: isAfter830 ? "今天 8:30 AM" : "昨天",
-            title: `${stock.name} ${template.title}`,
-            summary: template.summary
-        };
-    });
-}
+        return shuffledStocks.map(stock => {
+            const template = templates[Math.floor(Math.random() * templates.length)];
+            return {
+                symbol: stock.symbol,
+                time: isAfter830 ? "今天 8:30 AM" : "昨天",
+                title: `${stock.name} ${template.title}`,
+                summary: template.summary
+            };
+        });
+    }
 
-formatCurrency(value) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }).format(value);
-}
+    formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(value);
+    }
 
-updateTotalValue() {
-    const totalValue = this.stocks.reduce((acc, stock) => acc + (stock.price * stock.shares), 0);
-    const totalCost = this.stocks.reduce((acc, stock) => acc + (stock.cost * stock.shares), 0);
-    const totalChange = totalValue - totalCost;
-    const totalChangePercent = totalCost > 0 ? (totalChange / totalCost) * 100 : 0;
+    updateTotalValue() {
+        const totalValue = this.stocks.reduce((acc, stock) => acc + (stock.price * stock.shares), 0);
+        const totalCost = this.stocks.reduce((acc, stock) => acc + (stock.cost * stock.shares), 0);
+        const totalChange = totalValue - totalCost;
+        const totalChangePercent = totalCost > 0 ? (totalChange / totalCost) * 100 : 0;
 
-    const totalValueEl = document.getElementById('total-value');
-    const totalChangeEl = document.getElementById('total-change');
+        const totalValueEl = document.getElementById('total-value');
+        const totalChangeEl = document.getElementById('total-change');
 
-    totalValueEl.textContent = this.formatCurrency(totalValue);
+        totalValueEl.textContent = this.formatCurrency(totalValue);
 
-    // Update change indicator
-    totalChangeEl.className = 'change-indicator ' + (totalChange >= 0 ? 'positive' : 'negative');
-    totalChangeEl.innerHTML = `
+        // Update change indicator
+        totalChangeEl.className = 'change-indicator ' + (totalChange >= 0 ? 'positive' : 'negative');
+        totalChangeEl.innerHTML = `
             <span class="icon">${totalChange >= 0 ? '▲' : '▼'}</span>
             <span class="percentage">${Math.abs(totalChangePercent).toFixed(2)}%</span>
             <span class="period">Total Return</span>
         `;
-}
+    }
 
-renderStocks() {
-    const tbody = document.getElementById('stocks-body');
-    tbody.innerHTML = '';
+    renderStocks() {
+        const tbody = document.getElementById('stocks-body');
+        tbody.innerHTML = '';
 
-    this.stocks.forEach(stock => {
-        const tr = document.createElement('tr');
-        tr.id = `stock-${stock.symbol}`;
+        this.stocks.forEach(stock => {
+            const tr = document.createElement('tr');
+            tr.id = `stock-${stock.symbol}`;
 
-        const marketValue = stock.price * stock.shares;
-        const totalCost = stock.cost * stock.shares; // Total cost for all shares of this stock
-        const returnValue = marketValue - totalCost;
-        const returnPercent = totalCost > 0 ? (returnValue / totalCost) * 100 : 0;
-        const isPositive = returnValue >= 0;
+            const marketValue = stock.price * stock.shares;
+            const totalCost = stock.cost * stock.shares; // Total cost for all shares of this stock
+            const returnValue = marketValue - totalCost;
+            const returnPercent = totalCost > 0 ? (returnValue / totalCost) * 100 : 0;
+            const isPositive = returnValue >= 0;
 
-        tr.innerHTML = `
+            tr.innerHTML = `
                 <td data-label="Symbol">
                     <div class="symbol-cell">${stock.symbol}</div>
                     <span class="name-sub">${stock.name}</span>
@@ -540,78 +540,78 @@ renderStocks() {
                     ${isPositive ? '+' : ''}${this.formatCurrency(returnValue)} (${returnPercent.toFixed(2)}%)
                 </td>
             `;
-        tbody.appendChild(tr);
-    });
-}
-
-updateStockUI(stock) {
-    const tr = document.getElementById(`stock-${stock.symbol}`);
-    if (!tr) return;
-
-    const priceEl = document.getElementById(`price-${stock.symbol}`);
-    const changeEl = document.getElementById(`change-${stock.symbol}`);
-    const valueEl = document.getElementById(`value-${stock.symbol}`);
-    const returnEl = document.getElementById(`return-${stock.symbol}`);
-
-    const oldPrice = parseFloat(priceEl.textContent.replace('$', '').replace(',', ''));
-    const newPrice = stock.price;
-
-    // Flash animation on the row cell
-    if (newPrice > oldPrice) {
-        priceEl.classList.remove('flash-down');
-        priceEl.classList.add('flash-up');
-    } else if (newPrice < oldPrice) {
-        priceEl.classList.remove('flash-up');
-        priceEl.classList.add('flash-down');
+            tbody.appendChild(tr);
+        });
     }
 
-    setTimeout(() => {
-        priceEl.classList.remove('flash-up', 'flash-down');
-    }, 1000);
+    updateStockUI(stock) {
+        const tr = document.getElementById(`stock-${stock.symbol}`);
+        if (!tr) return;
 
-    // Update values
-    priceEl.textContent = '$' + this.formatCurrency(stock.price);
+        const priceEl = document.getElementById(`price-${stock.symbol}`);
+        const changeEl = document.getElementById(`change-${stock.symbol}`);
+        const valueEl = document.getElementById(`value-${stock.symbol}`);
+        const returnEl = document.getElementById(`return-${stock.symbol}`);
 
-    // Day Change (simulated as change from open/cost for now, but logic in startLiveUpdates uses initialPrice)
-    // Note: In startLiveUpdates, we update stock.change and stock.changePercent.
-    // Let's make sure that logic is consistent.
-    changeEl.style.color = `var(--${stock.change >= 0 ? 'success' : 'danger'}-color)`;
-    changeEl.textContent = `${stock.change >= 0 ? '+' : ''}${this.formatCurrency(stock.change)} (${stock.changePercent.toFixed(2)}%)`;
+        const oldPrice = parseFloat(priceEl.textContent.replace('$', '').replace(',', ''));
+        const newPrice = stock.price;
 
-    // Market Value
-    const marketValue = stock.price * stock.shares;
-    valueEl.textContent = '$' + this.formatCurrency(marketValue);
+        // Flash animation on the row cell
+        if (newPrice > oldPrice) {
+            priceEl.classList.remove('flash-down');
+            priceEl.classList.add('flash-up');
+        } else if (newPrice < oldPrice) {
+            priceEl.classList.remove('flash-up');
+            priceEl.classList.add('flash-down');
+        }
 
-    // Total Return (Price vs Cost)
-    const returnValue = (stock.price - stock.cost) * stock.shares;
-    const returnPercent = stock.cost > 0 ? ((stock.price - stock.cost) / stock.cost) * 100 : 0;
-    const isPositive = returnValue >= 0;
+        setTimeout(() => {
+            priceEl.classList.remove('flash-up', 'flash-down');
+        }, 1000);
 
-    returnEl.style.color = `var(--${isPositive ? 'success' : 'danger'}-color)`;
-    returnEl.textContent = `${isPositive ? '+' : ''}${this.formatCurrency(returnValue)} (${returnPercent.toFixed(2)}%)`;
-}
+        // Update values
+        priceEl.textContent = '$' + this.formatCurrency(stock.price);
 
-startLiveUpdates() {
-    setInterval(() => {
-        // Pick a random stock to update
-        const randomIndex = Math.floor(Math.random() * this.stocks.length);
-        const stock = this.stocks[randomIndex];
+        // Day Change (simulated as change from open/cost for now, but logic in startLiveUpdates uses initialPrice)
+        // Note: In startLiveUpdates, we update stock.change and stock.changePercent.
+        // Let's make sure that logic is consistent.
+        changeEl.style.color = `var(--${stock.change >= 0 ? 'success' : 'danger'}-color)`;
+        changeEl.textContent = `${stock.change >= 0 ? '+' : ''}${this.formatCurrency(stock.change)} (${stock.changePercent.toFixed(2)}%)`;
 
-        // Simulate price movement (-0.5% to +0.5%)
-        const movement = (Math.random() - 0.5) * 0.01;
-        const newPrice = stock.price * (1 + movement);
+        // Market Value
+        const marketValue = stock.price * stock.shares;
+        valueEl.textContent = '$' + this.formatCurrency(marketValue);
 
-        // Update data
-        stock.price = newPrice;
-        stock.change = stock.price - stock.initialPrice;
-        stock.changePercent = (stock.change / stock.initialPrice) * 100;
+        // Total Return (Price vs Cost)
+        const returnValue = (stock.price - stock.cost) * stock.shares;
+        const returnPercent = stock.cost > 0 ? ((stock.price - stock.cost) / stock.cost) * 100 : 0;
+        const isPositive = returnValue >= 0;
 
-        // Update UI
-        this.updateStockUI(stock);
-        this.updateTotalValue();
+        returnEl.style.color = `var(--${isPositive ? 'success' : 'danger'}-color)`;
+        returnEl.textContent = `${isPositive ? '+' : ''}${this.formatCurrency(returnValue)} (${returnPercent.toFixed(2)}%)`;
+    }
 
-    }, 1500); // Update every 1.5 seconds
-}
+    startLiveUpdates() {
+        setInterval(() => {
+            // Pick a random stock to update
+            const randomIndex = Math.floor(Math.random() * this.stocks.length);
+            const stock = this.stocks[randomIndex];
+
+            // Simulate price movement (-0.5% to +0.5%)
+            const movement = (Math.random() - 0.5) * 0.01;
+            const newPrice = stock.price * (1 + movement);
+
+            // Update data
+            stock.price = newPrice;
+            stock.change = stock.price - stock.initialPrice;
+            stock.changePercent = (stock.change / stock.initialPrice) * 100;
+
+            // Update UI
+            this.updateStockUI(stock);
+            this.updateTotalValue();
+
+        }, 1500); // Update every 1.5 seconds
+    }
 }
 
 // Initialize App
