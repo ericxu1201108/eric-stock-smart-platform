@@ -29,8 +29,22 @@ class StockApp {
         this.startLiveUpdates();
         this.renderNews();
         this.renderTrumpUpdates();
+        this.renderNews();
+        this.renderTrumpUpdates();
+        this.setupNavigation();
         this.setupAdminListeners();
         this.checkLoginState();
+    }
+
+    setupNavigation() {
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                this.switchSection(targetId);
+            });
+        });
     }
 
     loadStocks() {
@@ -85,15 +99,7 @@ class StockApp {
         const addBtn = document.getElementById('add-stock-submit');
         const resetBtn = document.getElementById('reset-default-btn');
 
-        // Navigation Logic
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                this.switchSection(targetId);
-            });
-        });
+        const resetBtn = document.getElementById('reset-default-btn');
 
         // Tabs
         const tabBtns = document.querySelectorAll('.tab-btn');
