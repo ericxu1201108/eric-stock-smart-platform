@@ -99,7 +99,7 @@ class StockApp {
         const addBtn = document.getElementById('add-stock-submit');
         const resetBtn = document.getElementById('reset-default-btn');
 
-        const resetBtn = document.getElementById('reset-default-btn');
+
 
         // Tabs
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -127,19 +127,36 @@ class StockApp {
         const loginError = document.getElementById('login-error');
         const vipLoginTrigger = document.getElementById('vip-login-trigger');
 
-        // Open Login Modal from Admin Button
-        btn.onclick = () => {
-            const role = sessionStorage.getItem('userRole');
-            if (role === 'admin') {
+        // Navbar Login Link
+        const navLoginLink = document.getElementById('nav-login-link');
+        const navAdminBtn = document.getElementById('nav-admin-btn');
+
+        if (navLoginLink) {
+            navLoginLink.onclick = (e) => {
+                e.preventDefault();
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                if (isLoggedIn) {
+                    // Logout logic
+                    if (confirm('Logout?')) {
+                        sessionStorage.clear();
+                        window.location.reload();
+                    }
+                } else {
+                    loginModal.style.display = 'block';
+                    usernameInput.value = '';
+                    passwordInput.value = '';
+                    loginError.style.display = 'none';
+                }
+            };
+        }
+
+        // Admin Button
+        if (navAdminBtn) {
+            navAdminBtn.onclick = () => {
                 modal.style.display = 'block';
                 this.renderAdminList();
                 this.renderUserList();
-            } else {
-                loginModal.style.display = 'block';
-                usernameInput.value = '';
-                passwordInput.value = '';
-                loginError.style.display = 'none';
-            }
+            };
         }
 
         // Open Login Modal from VIP Trigger
@@ -226,6 +243,7 @@ class StockApp {
     checkLoginState() {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
         const role = sessionStorage.getItem('userRole');
+        const username = sessionStorage.getItem('username');
 
         // VIP Content Logic
         const vipSection = document.getElementById('vip-section');
@@ -233,7 +251,7 @@ class StockApp {
         const vipUnlocked = document.querySelector('.vip-content-unlocked');
 
         if (vipSection) {
-            vipSection.style.display = 'block'; // Always show section container
+            vipSection.style.display = 'block';
             if (isLoggedIn) {
                 vipContent.style.display = 'none';
                 vipUnlocked.style.display = 'block';
@@ -243,13 +261,20 @@ class StockApp {
             }
         }
 
-        // Admin Button Logic
-        const adminBtn = document.getElementById('nav-login-btn'); // Updated ID
-        if (role === 'member') {
-            adminBtn.style.display = 'none';
-        } else {
-            adminBtn.style.display = 'block';
-            adminBtn.textContent = isLoggedIn && role === 'admin' ? 'Admin Panel' : 'Manage Stocks';
+        // Navbar Login State
+        const navLoginLink = document.getElementById('nav-login-link');
+        const navAdminBtn = document.getElementById('nav-admin-btn');
+
+        if (navLoginLink) {
+            navLoginLink.textContent = isLoggedIn ? `Logout (${username})` : '登录';
+        }
+
+        if (navAdminBtn) {
+            if (isLoggedIn && role === 'admin') {
+                navAdminBtn.style.display = 'block';
+            } else {
+                navAdminBtn.style.display = 'none';
+            }
         }
     }
 
