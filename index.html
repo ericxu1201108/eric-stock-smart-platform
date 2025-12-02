@@ -27,12 +27,29 @@
     </nav>
 
     <div class="container">
-        <header>
-            <div class="header-content">
+        <!-- About Section (Default View) -->
+        <section id="about-section" class="view-section active">
+            <div class="header-content" style="text-align: center; margin-bottom: 3rem;">
                 <h1>My Portfolio Tracker</h1>
                 <p class="subtitle">Real-time tracking of assets and market insights</p>
             </div>
-            <div class="portfolio-summary">
+            <div class="about-section">
+                <div class="section-header">
+                    <h3>👋 关于我</h3>
+                </div>
+                <div class="about-content">
+                    <p>欢迎来到我的个人投资追踪平台。这里汇集了我对市场的最新观察、核心持仓表现以及对宏观政策的深度分析。我相信通过数据驱动的决策和对政治经济学的敏锐洞察，能在波动的市场中寻找确定的机会。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stocks Section -->
+        <section id="stocks-section" class="view-section" style="display: none;">
+            <div class="section-header">
+                <h3>Your Assets</h3>
+            </div>
+
+            <div class="portfolio-summary" style="margin-bottom: 2rem;">
                 <div class="summary-card">
                     <span class="label">Total Value</span>
                     <span class="value" id="total-value">$0.00</span>
@@ -45,91 +62,71 @@
                     </span>
                 </div>
             </div>
-        </header>
 
-        <main>
-            <!-- About Section -->
-            <section id="about-section" class="about-section">
-                <div class="section-header">
-                    <h3>👋 关于我</h3>
-                </div>
-                <div class="about-content">
-                    <p>欢迎来到我的个人投资追踪平台。这里汇集了我对市场的最新观察、核心持仓表现以及对宏观政策的深度分析。我相信通过数据驱动的决策和对政治经济学的敏锐洞察，能在波动的市场中寻找确定的机会。
-                    </p>
-                </div>
-            </section>
-
-            <div class="main-grid">
-                <section id="stocks-section" class="stocks-section">
-                    <div class="section-header">
-                        <h3>Your Assets</h3>
-                        <!-- Login button moved to navbar -->
-                    </div>
-
-                    <div class="table-container">
-                        <table class="stocks-table">
-                            <thead>
-                                <tr>
-                                    <th>Symbol</th>
-                                    <th class="text-right">Price</th>
-                                    <th class="text-right">Change</th>
-                                    <th class="text-right">Shares</th>
-                                    <th class="text-right">Avg Cost</th>
-                                    <th class="text-right">Market Value</th>
-                                    <th class="text-right">Return</th>
-                                </tr>
-                            </thead>
-                            <tbody id="stocks-body">
-                                <!-- Stocks will be populated by JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+            <div class="table-container">
+                <table class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Change</th>
+                            <th class="text-right">Shares</th>
+                            <th class="text-right">Avg Cost</th>
+                            <th class="text-right">Market Value</th>
+                            <th class="text-right">Return</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-body">
+                        <!-- Stocks will be populated by JS -->
+                    </tbody>
+                </table>
             </div>
+        </section>
 
-            <aside class="sidebar">
-                <!-- News Section -->
-                <div id="news-section" class="news-section">
-                    <div class="section-header">
-                        <h3>每日晨报 ☕</h3>
-                        <span class="news-time">今天 8:30 AM</span>
-                    </div>
-                    <div class="news-feed" id="news-feed">
-                        <!-- News items will be populated by JS -->
-                    </div>
+        <!-- Trump Tracker Section -->
+        <section id="trump-section" class="view-section" style="display: none;">
+            <div class="trump-section">
+                <div class="section-header">
+                    <h3>特朗普动态 🇺🇸</h3>
+                    <span class="news-time">Live</span>
+                </div>
+                <div class="trump-feed" id="trump-feed">
+                    <!-- Trump updates will be populated by JS -->
                 </div>
 
-                <!-- Trump Tracker Section -->
-                <div id="trump-section" class="trump-section">
-                    <div class="section-header">
-                        <h3>特朗普动态 🇺🇸</h3>
-                        <span class="news-time">Live</span>
+                <!-- VIP Section -->
+                <div class="vip-section" id="vip-section" style="display: none;">
+                    <div class="vip-header">
+                        <span class="vip-badge">VIP</span>
+                        <h4>深度市场预测</h4>
                     </div>
-                    <div class="trump-feed" id="trump-feed">
-                        <!-- Trump updates will be populated by JS -->
+                    <div class="vip-content">
+                        <p>🔒 仅限会员查看：特朗普政策对下周科技股的量化影响模型...</p>
+                        <button class="btn-unlock" id="vip-login-trigger">登录查看</button>
                     </div>
-
-                    <!-- VIP Section -->
-                    <div class="vip-section" id="vip-section" style="display: none;">
-                        <div class="vip-header">
-                            <span class="vip-badge">VIP</span>
-                            <h4>深度市场预测</h4>
-                        </div>
-                        <div class="vip-content">
-                            <p>🔒 仅限会员查看：特朗普政策对下周科技股的量化影响模型...</p>
-                            <button class="btn-unlock" id="vip-login-trigger">登录查看</button>
-                        </div>
-                        <div class="vip-content-unlocked" style="display: none;">
-                            <div class="prediction-card">
-                                <h5>下周预测: 科技股 (XLK)</h5>
-                                <div class="prediction-value positive">▲ 2.4%</div>
-                                <p>基于最新的税收提案，模型显示资金将加速回流。</p>
-                            </div>
+                    <div class="vip-content-unlocked" style="display: none;">
+                        <div class="prediction-card">
+                            <h5>下周预测: 科技股 (XLK)</h5>
+                            <div class="prediction-value positive">▲ 2.4%</div>
+                            <p>基于最新的税收提案，模型显示资金将加速回流。</p>
                         </div>
                     </div>
                 </div>
-            </aside>
-        </main>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news-section" class="view-section" style="display: none;">
+            <div class="news-section">
+                <div class="section-header">
+                    <h3>每日晨报 ☕</h3>
+                    <span class="news-time">今天 8:30 AM</span>
+                </div>
+                <div class="news-feed" id="news-feed">
+                    <!-- News items will be populated by JS -->
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Login Modal -->
